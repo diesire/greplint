@@ -1,55 +1,36 @@
-import Config  from './config';
-import Finder  from './finder';
-import Grep  from './grep';
+import Config from './config';
+import Finder from './finder';
+import Grep from './grep';
 
 export default class Linter {
   constructor(path) {
-    this.path = path || 'C:/Users/NG52D87/github/greplint/test/fixtures'
-    this.results = new Map()
+    this.path = path
     this.finder = new Finder()
     this.grep = new Grep()
   }
 
-  lint(){
-    this.finder.find(this.path, this._foundDirs.bind(this))
+  lint() {
+    const dirs = this.finder.find(this.path)
+    console.log(dirs);
+    return dirs
+      .then(values => this.grepDirs([this.path].concat(values)))
+      .catch(err => Promise.reject(`Linter#lint error ${err}`))
   }
 
-  _foundDirs(err, subdirs) {
-    if (err) throw err;
-    [this.path].concat(subdirs).forEach((path) => {
-      let config = new Config(path)
-      if (config.data.rules.todo) {
-        if (this.results.get(path) === undefined) {
-          this.results.set(path, new Array())
-        }
-
-        const text = `"${config.data.rules.todo.join('|')}"`
-        const lines = new Grep().find(text, path);
-        this._grepResults(path, lines)
-      }
-    })
+  grepDirs(paths) {
+    return Promise.all(paths.map(path => this.grepDir(path)));
   }
 
-  _grepResults(path, cmd) {
-    cmd.stdout.on('data', (data) => {
-      const lines = this.results.get(path);
-      lines.push(data)
-      this.results.set(path, lines)
-    });
-
-    cmd.stderr.on('data', (data) => {
-      const lines = this.results.get(path);
-      lines.push(data)
-      this.results.set(path, lines)
-    });
-
-    cmd.on('close', (code) => {
-      console.log('==> child process exited with code ' + code);
-      console.log(this.results);
-    });
-
-    cmd.on('error', (err) => {
-      console.log('==> Failed to start child process ' + err);
-    });
+  grepDir(path) {
+    const config = new Config(path)
+    let grepExpresion = ""
+    let matches = ""
+    if (config.data.rules.todo) {
+      grepExpresion = `"${config.data.rules.todo.join('|')}"`
+      return this.grep.find(grepExpresion, path)
+      .then(matches => ({path, grepExpresion, matches}))
+      // .catch(err => Promise.reject(`Linter#grepDir error ${err}`))
+    }
+    return Promise.resolve({path, grepExpresion, matches})
   }
 }
