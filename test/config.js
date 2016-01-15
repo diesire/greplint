@@ -13,14 +13,14 @@ describe('Config', function() {
       (() => {new Config()}).should.throw(Error)
     });
 
-    it('should return an object when the path is not present', function () {
+    it('should return not return data when the path is not present', function () {
       const PATH = '../test'
       let config = new Config(PATH)
       config.should.have.property('dirname', PATH)
       config.should.have.property('data', false)
     });
 
-    it('should return an object when the path is present and config file exists', function () {
+    it('should return data when the path is present and config file exists', function () {
       let config = new Config(__dirname)
       const RESULT = fs.readFileSync(path.join(__dirname, '.greplintrc'))
       config.should.have.property('dirname', __dirname)

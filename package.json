@@ -1,26 +1,37 @@
 {
   "name": "greplint",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "Quick & dirty grep-like linter",
+  "bin": {
+    "greplint": "bin/greplint.js"
+  },
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src --out-dir lib --source-maps",
     "watch": "babel src --out-dir lib --watch --source-maps",
     "prepublish": "npm run build",
-    "test": "npm run build && mocha --require babel-core/register"
+    "test": "npm run build && mocha --require babel-core/register",
+    "test-cli": "npm run build && node bin/greplint.js --verbose C://Users//NG52D87//github//greplint//test//fixtures"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "diesire",
+  "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.3.17",
     "babel-preset-es2015": "^6.3.13",
     "chai": "^3.4.1",
-    "mocha": "^2.3.4"
+    "memorystream": "^0.3.1",
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0"
   },
   "dependencies": {
+    "chalk": "^1.1.1",
+    "commander": "^2.9.0",
     "nak": "^0.3.3",
     "node-dir": "^0.1.11",
+    "npmlog": "^2.0.0",
     "rcfinder": "^0.1.8",
-    "shelljs-nodecli": "^0.1.1"
+    "shelljs-nodecli": "^0.1.1",
+    "through2": "^2.0.0"
   }
 }
