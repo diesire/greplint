@@ -2,16 +2,12 @@
   "name": "greplint",
   "version": "0.0.1",
   "description": "Quick & dirty grep-like linter",
-  "bin": {
-    "greplint": "bin/greplint.js"
-  },
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src --out-dir lib --source-maps",
     "watch": "babel src --out-dir lib --watch --source-maps",
     "prepublish": "npm run build",
     "test": "npm run build && mocha --require babel-core/register",
-    "test-cli": "npm run build && node bin/greplint.js --verbose C://Users//NG52D87//github//greplint//test//fixtures"
   },
   "author": "diesire",
   "license": "MIT",
