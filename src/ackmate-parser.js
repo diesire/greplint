@@ -1,9 +1,12 @@
 //From https://github.com/alexgorbatchev/ackmate-parser/blob/master/lib/ackmate-parser.js
 
 import through2 from 'through2'
-import npmlog from 'npmlog'
+import logger from 'bragi'
 
 export default (options = {}) => {
+  logger.options.groupsEnabled = options.groupsEnabled || false
+  logger.options.groupsDisabled = options.groupsDisabled || true
+
   const surroundLine = /^(\d+):(.*)$/
   const matchLine = /^(\d+);(\d+) (\d+):(.*)$/
   const matchComposeLine = /^(\d+);(\d+ \d+(?:,\d+ \d+)*):(.*)$/
@@ -11,8 +14,6 @@ export default (options = {}) => {
   let stream = through2.obj(transform, flush)
   let filename = null
   let tail = null
-
-  npmlog.level = options.verbose? 'silly': 'error'
 
   function push(data) {
     return stream.push(data)
@@ -22,10 +23,10 @@ export default (options = {}) => {
       let index, length, lineNumber, matches, value
 
       if (line[0] === ':') {
-        npmlog.silly('ackmate-parser:processLine', `case only filename`)
+        logger.log('Parser:processLine', `case filename only`)
         filename = line.slice(1)
       } else if (matches = line.match(surroundLine)) {
-        npmlog.silly('ackmate-parser:processLine', `case surroundLine`)
+        logger.log('Parser:processLine', `case surroundLine`)
         const [,lineNumber, value] = matches
         push({
           filename,
@@ -33,7 +34,8 @@ export default (options = {}) => {
           value
         })
       } else if (matches = line.match(matchComposeLine)) {
-        npmlog.silly('ackmate-parser:processLine', `case matchComposeLine`, matches)
+        logger.log('Parser:processLine', 'case matchComposeLine')
+        logger.log('Parser:processLine:debug', matches)
         const [,lineNumber, pairStr, value] = matches
         const pairs = pairStr.split(',')
         pairs.forEach(pair => {
@@ -47,9 +49,10 @@ export default (options = {}) => {
           })
         })
       } else if (emptyLine.test(line)) {
-        npmlog.silly('ackmate-parser:processLine', `empty line`)
+        logger.log('Parser:processLine', `empty line`)
       } else {
-        npmlog.error('ackmate-parser:processLine', `unhandled case`, line)
+        logger.log('Parser:processLine', `unhandled case`)
+        logger.log('Parser:processLine:debug', line)
         stream.emit('error', new Error('Invalid case'))
       }
     }
@@ -57,7 +60,7 @@ export default (options = {}) => {
   function transform(data, encoding, callback) {
     let hasTail, line, lines, _len
 
-    npmlog.verbose('ackmate-parser:transform', data.toString())
+    logger.log('Parser:transform:debug', data.toString())
 
     data = data.toString();
     if (tail != null) {
@@ -72,11 +75,11 @@ export default (options = {}) => {
 
   function flush(callback) {
     if (tail != null) {
-      npmlog.silly('ackmate-parser:flush', `tail`, tail)
       processLine(tail);
+      logger.log('Parser:flush:debug', `tail`, tail)
     }
-    npmlog.silly('ackmate-parser:flush')
     return callback();
+    logger.log('Parser:flush:debug')
   }
 
   return stream

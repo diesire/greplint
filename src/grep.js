@@ -1,45 +1,49 @@
+import path from 'path'
 import nodeCLI from 'shelljs-nodecli'
 import ackmateParser from './ackmate-parser'
-import npmlog from 'npmlog'
+import logger from 'bragi'
 
 export default class Grep {
   constructor(options = {}) {
+    logger.options.groupsEnabled = options.groupsEnabled || false
+    logger.options.groupsDisabled = options.groupsDisabled || true
+
     this.options = options
-    npmlog.level = options.verbose? 'silly': 'error'
   }
 
-  find(text, path, filename = '*.*') {
+  find(text, basepath, filename = '*.*') {
     return new Promise((resolve, reject) => {
       let lines = []
       const stream = ackmateParser(this.options)
 
-      const options = ` --ackmate -G ${filename} -d */* -i ${text} ${path}`
-      npmlog.verbose('Grep', `running command nak`, options)
-      const cmd = nodeCLI.exec("nak", options, {async:true, silent:true});
+      const options = ` --ackmate -G ${filename} -d */* -i "${text}" ${basepath}`
+      logger.log('Grep', `running command nak`, options)
+      const cmd = nodeCLI.exec("nak", options, {async:true, silent:true})
 
       cmd.stdout.pipe(stream)
 
       cmd.stdout.on('data', data => {
-        npmlog.warn('Grep stdout:data', '', data)
+        logger.log('Grep:stdout:data', '', data)
       })
 
       cmd.stderr.on('data', data => {
-        npmlog.warning('Grep stderr:data', '', data)
+        logger.log('Grep:stderr:data', '', data)
       })
 
       stream.on('data', data => {
-        npmlog.silly('Grep parser:data', 'match', data)
+        logger.log('Grep:parser:data', 'match', data)
         if (data.lineNumber && data.value) {
+          data.filename = path.resolve(data.filename)
           lines.push(data)
-          // npmlog.silly('Grep parser:data', 'pushed', lines)
+          // logger.log('Grep parser:data', 'pushed', lines)
         }
       })
       .on('end', () => {
-        npmlog.silly('Grep parser:end', 'lines', lines)
+        logger.log('Grep:parser:end', 'lines', lines)
       })
       .on('close', code => {
-        npmlog.warn('Grep parser close')
-        npmlog.silly('Grep parser close', 'code', code)
+        logger.log('Grep:parser:close')
+        logger.log('Grep:parser:close', 'code', code)
         resolve(lines)
       })
       .on('error', err => {
@@ -50,8 +54,8 @@ export default class Grep {
         reject(`Grep#find process error ${err}`)
       })
       cmd.on('close', code => {
-        npmlog.warn('Grep process close')
-        // npmlog.silly('Grep process close', 'code', code)
+        logger.log('Grep:process:close')
+        // logger.log('Grep process close', 'code', code)
         resolve(lines)
       })
     })

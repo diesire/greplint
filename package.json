@@ -25,7 +25,7 @@
     "commander": "^2.9.0",
     "nak": "^0.3.3",
     "node-dir": "^0.1.11",
-    "npmlog": "^2.0.0",
+    "bragi": "^0.1.1",
     "rcfinder": "^0.1.8",
     "shelljs-nodecli": "^0.1.1",
     "through2": "^2.0.0"

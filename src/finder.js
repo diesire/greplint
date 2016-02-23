@@ -1,13 +1,20 @@
 import dir  from 'node-dir'
 import fs from 'fs'
-import npmlog from 'npmlog'
+import logger from 'bragi'
 
 export default class Finder {
+  constructor(options = {}) {
+    logger.options.groupsEnabled = options.groupsEnabled || false
+    logger.options.groupsDisabled = options.groupsDisabled || true
+
+    this.options = options
+  }
+
   find(path) {
-    npmlog.verbose('Finder', `searching directories on ${path}`)
+    logger.log('Finder', `searching directories on ${path}`)
 
     if (fs.statSync(path).isFile()) {
-      npmlog.verbose('Finder', `file detected`)
+      logger.log('Finder', `file detected`)
       return Promise.resolve([])
     }
 
@@ -21,7 +28,7 @@ export default class Finder {
   setSubDirs(err, subdirs, resolve, reject) {
     if (err) return reject(`Finder#setSubDirs error ${err}`)
 
-    npmlog.verbose('Finder', `dirs found`, subdirs)
+    logger.log('Finder', `dirs found`, subdirs)
     return resolve(subdirs)
   }
 }
