@@ -26,35 +26,15 @@ export default class Linter {
   }
 
   grepDirs(pathnames) {
-    // return Promise.all(pathnames.map(pathname => this.grepDir(pathname)))
-    // .then(values => {
-    //   const filtered =  values.reduce((a, b) => {
-    //     return a.concat(b)
-    //   }, [])
-    //   npmlog.verbose('Linter', `matches found`, filtered)
-    //   return filtered
-    // });
-    const theOne = pathnames.reduce((previous, pathname) => {
-      npmlog.verbose('Linter', `theOne 1`)
-      return previous
-        .then(results => {
-          npmlog.verbose('Linter', `theOne 1111`)
-          this.grepDir(pathname).then(values => {
-            npmlog.verbose('Linter', `theOne 11111111`, pathname)
-            Promise.resolve(results.concat(values))
-          })
-        })
-        .catch(err => {
-          Promise.reject(err)
-        })
-    }, Promise.resolve([]))
-
-    theOne
-      .then(values => npmlog.verbose('Linter', `matches found`, values))
-      .catch(err => {
-        npmlog.error('Linter', `err`, err)
-        Promise.reject(err)
-      })
+    logger.log('Linter', `grepDirs on ${pathnames}`)
+    return Promise.all(pathnames.map(pathname => this.grepDir(pathname)))
+    .then(values => {
+      const filtered =  values.reduce((a, b) => {
+        return a.concat(b)
+      }, [])
+      logger.log('Linter', `matches found`, filtered)
+      return filtered
+    })
   }
 
   /**
