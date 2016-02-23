@@ -41,10 +41,11 @@ export default class Linter {
   * @return {Object}
   */
   grepDir(pathname) {
-    const config = new Config(pathname)
     logger.log('Linter:grepDir', `working on ${pathname}`)
     let dirname = pathname
     let basename = undefined
+    let config
+    let grepExpression = this.grepExpression
 
     if (fs.statSync(pathname).isFile()) {
       const parse = path.parse(pathname)
@@ -55,10 +56,19 @@ export default class Linter {
 
     logger.log('Linter:grepDir:debug', 'paths', dirname, basename)
 
-    if (config.data.rules.todo) {
-      const grepExpresion = `"${config.data.rules.todo.join('|')}"`
-      return this.grep.find(grepExpresion, dirname, basename)
+    if (!grepExpression) {
+      logger.log('Linter:grepDir:debug', 'looking config file')
+      config = new Config(pathname, this.options)
+      if (config.data.rules.todo) {
+        grepExpression = `${config.data.rules.todo.join('|')}`
+      }
+    }
+
+    if (grepExpression) {
+      logger.log('Linter:grepDir:debug', 'params', grepExpression, dirname, basename)
+      return this.grep.find(grepExpression, dirname, basename)
         .then(lines => {
+          logger.log('Linter:grepDir', 'found lines', lines)
           return Promise.resolve(lines)
         })
         .catch(err => Promise.reject(`Linter#grepDir error ${err}`))
