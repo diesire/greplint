@@ -2,7 +2,7 @@
   "name": "greplint",
   "version": "0.0.1",
   "description": "Quick & dirty grep-like linter",
-  "main": "lib/index.js",
+  "main": "lib/linter.js",
   "scripts": {
     "build": "babel src --out-dir lib --source-maps",
     "watch": "babel src --out-dir lib --watch --source-maps",
