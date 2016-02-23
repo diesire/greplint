@@ -5,9 +5,9 @@
   "main": "lib/linter.js",
   "scripts": {
     "build": "babel src --out-dir lib --source-maps",
-    "watch": "babel src --out-dir lib --watch --source-maps",
     "prepublish": "npm run build",
-    "test": "npm run build && mocha --require babel-core/register",
+    "preversion": "npm test",
+    "test": "npm run build && mocha --require babel-core/register"
   },
   "author": "diesire",
   "license": "MIT",
@@ -23,6 +23,7 @@
   "dependencies": {
     "chalk": "^1.1.1",
     "commander": "^2.9.0",
+    "bragi": "^0.1.1",
     "nak": "^0.3.3",
     "node-dir": "^0.1.11",
     "bragi": "^0.1.1",
