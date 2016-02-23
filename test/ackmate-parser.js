@@ -1,20 +1,19 @@
 import chai from 'chai'
 import sinon from 'sinon'
-import sinonChai  from 'sinon-chai'
+import sinonChai from 'sinon-chai'
 import ackmateParser from '../lib/ackmate-parser'
 import MemStream from 'memorystream'
-
 
 const should = chai.should()
 chai.use(sinonChai)
 
 const FILE_ONLY = {
-  input : `:C:\\Users\\NG52D87\\github\\greplint\\test\\fixtures\\input.txt`,
+  input: `:C:\\Users\\NG52D87\\github\\greplint\\test\\fixtures\\input.txt`,
   output: []
 }
 
 const MATCH = {
-  input : `:C:\\Users\\NG52D87\\github\\greplint\\test\\fixtures\\input.txt\n2;3 4:-- TODO call something`,
+  input: `:C:\\Users\\NG52D87\\github\\greplint\\test\\fixtures\\input.txt\n2;3 4:-- TODO call something`,
   output: [
     {
       filename: `C:\\Users\\NG52D87\\github\\greplint\\test\\fixtures\\input.txt`,
@@ -27,7 +26,7 @@ const MATCH = {
 }
 
 const MATCHES = {
-  input : `:C:\\Users\\NG52D87\\github\\greplint\\test\\fixtures\\input.txt\n2;3 4:-- TODO call something\n3;3 3:-- XXX roo`,
+  input: `:C:\\Users\\NG52D87\\github\\greplint\\test\\fixtures\\input.txt\n2;3 4:-- TODO call something\n3;3 3:-- XXX roo`,
   output: [
     {
       filename: `C:\\Users\\NG52D87\\github\\greplint\\test\\fixtures\\input.txt`,
@@ -46,7 +45,7 @@ const MATCHES = {
 }
 
 const COMPLEX_MATCH = {
-  input : `:C:\\Users\\NG52D87\\github\\greplint\\test\\fixtures\\input.txt\n2;3 4,9 1,12 2:-- TODO call something`,
+  input: `:C:\\Users\\NG52D87\\github\\greplint\\test\\fixtures\\input.txt\n2;3 4,9 1,12 2:-- TODO call something`,
   output: [
     {
       filename: `C:\\Users\\NG52D87\\github\\greplint\\test\\fixtures\\input.txt`,
@@ -70,7 +69,7 @@ const COMPLEX_MATCH = {
   ]
 }
 
-describe.only('ackmate-parser', () => {
+describe('ackmate-parser', () => {
   let spy = null
   let memStream = null
   let parser = null
@@ -79,7 +78,7 @@ describe.only('ackmate-parser', () => {
     beforeEach(() => {
       spy = sinon.spy()
       memStream = new MemStream()
-      parser = ackmateParser({verbose:true})
+      parser = ackmateParser({verbose: true})
     })
 
     it('should handle filename only', (done) => {

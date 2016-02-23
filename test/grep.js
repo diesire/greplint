@@ -1,12 +1,14 @@
+import path from 'path'
 import chai from 'chai'
 import Grep from '../lib/grep'
 
-const should = chai.should();
+const should = chai.should()
 
-describe('Grep', function() {
+describe('Grep', function () {
   describe('#find() in a directory', function () {
-    it('should bring some results', function () {
-      return new Grep().find('"hello|root"', 'C:/Users/NG52D87/github/greplint/test/fixtures')
+    it('should bring some results', function (done) {
+      let fixtures = path.join(__dirname, 'fixtures')
+      return new Grep().find('hello|root', fixtures)
         .then(values => {
           values.should.have.length.above(0)
           values[0].should.have.property('filename').which.contain('input.txt')
@@ -15,13 +17,15 @@ describe('Grep', function() {
           values[1].should.have.property('filename').which.contain('input.txt')
           values[1].should.have.property('lineNumber', '3')
           values[1].should.have.property('value', '-- XXX root')
+          done()
         })
-    });
-  });
+    })
+  })
 
   describe('#find() in a file', function () {
-    it('should bring some results', function () {
-      return new Grep().find('"hello|root"', 'C:/Users/NG52D87/github/greplint/test/fixtures', 'input.txt')
+    it('should bring some results', function (done) {
+      let fixtures = path.join(__dirname, 'fixtures')
+      return new Grep().find('hello|root', fixtures, 'input.txt')
         .then(values => {
           values.should.have.length.above(0)
           values[0].should.have.property('filename').which.contain('input.txt')
@@ -30,7 +34,8 @@ describe('Grep', function() {
           values[1].should.have.property('filename').which.contain('input.txt')
           values[1].should.have.property('lineNumber', '3')
           values[1].should.have.property('value', '-- XXX root')
+          done()
         })
-    });
-  });
-});
+    })
+  })
+})

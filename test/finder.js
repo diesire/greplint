@@ -1,28 +1,37 @@
+import path from 'path'
 import chai from 'chai'
 import Finder from '../lib/finder'
 
-const should = chai.should();
+const should = chai.should()
 
-describe('Finder', function() {
+describe('Finder', function () {
   describe('#constructor()', function () {
     it('should exists', function () {
-      (new Finder()).should.not.be.null;
-    });
-  });
+      (new Finder()).should.not.be.null
+    })
+  })
 
   describe('#find()', function () {
     describe('in a directory', function () {
-      it('should find something', function () {
-        new Finder().find('C:/Users/NG52D87/github/greplint/test/fixtures')
-        .then(values => values.should.have.length.above(0))
-      });
-    });
+      it('should find something', function (done) {
+        let fixtures = path.join(__dirname, 'fixtures')
+        new Finder().find(fixtures)
+          .then(values => {
+            values.should.have.length.above(0)
+            done()
+          })
+      })
+    })
 
     describe('in a file', function () {
-      it('should be empty', function () {
-        new Finder().find('C:/Users/NG52D87/github/greplint/test/fixtures/input.txt')
-        .then(values => values.should.be.empty)
-      });
-    });
-  });
-});
+      it('should be empty', function (done) {
+        let fixtures = path.join(__dirname, 'fixtures/input.txt')
+        new Finder().find(fixtures)
+          .then(values => {
+            values.should.be.empty
+            done()
+          })
+      })
+    })
+  })
+})
