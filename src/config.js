@@ -5,7 +5,7 @@ import logger from 'bragi'
 export default class Config {
   constructor(dirname, options = {}) {
     assert.equal(typeof (dirname), 'string',
-      "argument 'dirname' must be a string");
+      "argument 'dirname' must be a string")
 
     logger.options.groupsEnabled = options.groupsEnabled || false
     logger.options.groupsDisabled = options.groupsDisabled || true
