@@ -2,9 +2,9 @@ import path from 'path'
 import chai from 'chai'
 import Grep from '../lib/grep'
 
-const should = chai.should();
+const should = chai.should()
 
-describe('Grep', function() {
+describe('Grep', function () {
   describe('#find() in a directory', function () {
     it('should bring some results', function (done) {
       let fixtures = path.join(__dirname, 'fixtures')
@@ -19,8 +19,8 @@ describe('Grep', function() {
           values[1].should.have.property('value', '-- XXX root')
           done()
         })
-    });
-  });
+    })
+  })
 
   describe('#find() in a file', function () {
     it('should bring some results', function (done) {
@@ -36,6 +36,6 @@ describe('Grep', function() {
           values[1].should.have.property('value', '-- XXX root')
           done()
         })
-    });
-  });
-});
+    })
+  })
+})

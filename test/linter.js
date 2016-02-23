@@ -2,11 +2,11 @@ import path from 'path'
 import chai from 'chai'
 import Linter from '../lib/linter'
 
-const should = chai.should();
+const should = chai.should()
 
-describe('Linter', function() {
-  describe('#lint() runs in a directory', function() {
-    it('should exists', function(done) {
+describe('Linter', function () {
+  describe('#lint() runs in a directory', function () {
+    it('should exists', function (done) {
       let fixtures = path.join(__dirname, 'fixtures')
       return new Linter(fixtures).lint()
         .then(values => {
@@ -19,11 +19,11 @@ describe('Linter', function() {
           values[1].should.have.property('value', '-- XXX root')
           done()
         })
-    });
-  });
+    })
+  })
 
-  describe('#lint() runs in a file', function() {
-    it('should exists', function(done) {
+  describe('#lint() runs in a file', function () {
+    it('should exists', function (done) {
       let fixtures = path.join(__dirname, 'fixtures/input.txt')
       return new Linter(fixtures).lint()
         .then(values => {
@@ -36,6 +36,6 @@ describe('Linter', function() {
           values[1].should.have.property('value', '-- XXX root')
           done()
         })
-    });
-  });
-});
+    })
+  })
+})

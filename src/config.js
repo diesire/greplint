@@ -13,7 +13,7 @@ export default class Config {
     this.dirname = dirname
     this.data = null
     const rcFinder = new RcFinder('.greplintrc')
-    //TODO: make it async
+    // TODO: make it async
     this.data = rcFinder.find(this.dirname)
 
     logger.log('Config', `looking for config file on ${this.dirname}`)

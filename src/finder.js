@@ -1,4 +1,4 @@
-import dir  from 'node-dir'
+import dir from 'node-dir'
 import fs from 'fs'
 import logger from 'bragi'
 

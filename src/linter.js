@@ -6,7 +6,6 @@ import Config from './config'
 import Finder from './finder'
 import Grep from './grep'
 
-
 export default class Linter {
   constructor(pathname, options = {}) {
     logger.options.groupsEnabled = options.groupsEnabled || false
@@ -28,13 +27,13 @@ export default class Linter {
   grepDirs(pathnames) {
     logger.log('Linter', `grepDirs on ${pathnames}`)
     return Promise.all(pathnames.map(pathname => this.grepDir(pathname)))
-    .then(values => {
-      const filtered =  values.reduce((a, b) => {
-        return a.concat(b)
-      }, [])
-      logger.log('Linter', `matches found`, filtered)
-      return filtered
-    })
+      .then(values => {
+        const filtered = values.reduce((a, b) => {
+          return a.concat(b)
+        }, [])
+        logger.log('Linter', `matches found`, filtered)
+        return filtered
+      })
   }
 
   /**

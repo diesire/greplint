@@ -18,7 +18,7 @@ export default class Grep {
 
       const options = ` --ackmate -G ${filename} -d */* -i "${text}" ${basepath}`
       logger.log('Grep', `running command nak`, options)
-      const cmd = nodeCLI.exec("nak", options, {async:true, silent:true})
+      const cmd = nodeCLI.exec('nak', options, {async: true, silent: true})
 
       cmd.stdout.pipe(stream)
 
@@ -35,20 +35,20 @@ export default class Grep {
         if (data.lineNumber && data.value) {
           data.filename = path.resolve(data.filename)
           lines.push(data)
-          // logger.log('Grep parser:data', 'pushed', lines)
+        // logger.log('Grep parser:data', 'pushed', lines)
         }
       })
-      .on('end', () => {
-        logger.log('Grep:parser:end', 'lines', lines)
-      })
-      .on('close', code => {
-        logger.log('Grep:parser:close')
-        logger.log('Grep:parser:close', 'code', code)
-        resolve(lines)
-      })
-      .on('error', err => {
-        reject(`Grep#find parser error ${err}`)
-      })
+        .on('end', () => {
+          logger.log('Grep:parser:end', 'lines', lines)
+        })
+        .on('close', code => {
+          logger.log('Grep:parser:close')
+          logger.log('Grep:parser:close', 'code', code)
+          resolve(lines)
+        })
+        .on('error', err => {
+          reject(`Grep#find parser error ${err}`)
+        })
 
       cmd.on('error', err => {
         reject(`Grep#find process error ${err}`)
