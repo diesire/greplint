@@ -11,6 +11,7 @@ export default (options = {}) => {
   const matchLine = /^(\d+);(\d+) (\d+):(.*)$/
   const matchComposeLine = /^(\d+);(\d+ \d+(?:,\d+ \d+)*):(.*)$/
   const emptyLine = /^\s*$/
+  const newline = /\n|\r\n/
   let stream = through2.obj(transform, flush)
   let filename = null
   let tail = null
@@ -62,24 +63,25 @@ export default (options = {}) => {
 
     logger.log('Parser:transform:debug', data.toString())
 
-    data = data.toString();
+    data = data.toString()
     if (tail != null) {
-      data = tail + data;
+      data = tail + data
     }
-    hasTail = data[data.length - 1] !== '\n';
-    lines = data.split('\n');
-    tail = hasTail && lines.pop() || null;
+    // hasTail = data[data.length - 1] !== '\n'
+    hasTail = !newline.test(data[data.length - 1])
+    lines = data.split(newline)
+    tail = hasTail && lines.pop() || null
     lines.forEach(line => processLine(line))
-    return callback();
+    return callback()
   }
 
   function flush(callback) {
     if (tail != null) {
-      processLine(tail);
       logger.log('Parser:flush:debug', `tail`, tail)
+      processLine(tail)
     }
-    return callback();
     logger.log('Parser:flush:debug')
+    return callback()
   }
 
   return stream
