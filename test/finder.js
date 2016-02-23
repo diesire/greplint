@@ -1,3 +1,4 @@
+import path from 'path'
 import chai from 'chai'
 import Finder from '../lib/finder'
 
@@ -13,14 +14,16 @@ describe('Finder', function() {
   describe('#find()', function () {
     describe('in a directory', function () {
       it('should find something', function () {
-        new Finder().find('C:/Users/NG52D87/github/greplint/test/fixtures')
+        let fixtures = path.join(__dirname, 'fixtures')
+        new Finder().find(fixtures)
         .then(values => values.should.have.length.above(0))
       });
     });
 
     describe('in a file', function () {
       it('should be empty', function () {
-        new Finder().find('C:/Users/NG52D87/github/greplint/test/fixtures/input.txt')
+        let fixtures = path.join(__dirname, 'fixtures/input.txt')
+        new Finder().find(fixtures)
         .then(values => values.should.be.empty)
       });
     });

@@ -1,3 +1,4 @@
+import path from 'path'
 import chai from 'chai'
 import Linter from '../lib/linter'
 
@@ -6,7 +7,8 @@ const should = chai.should();
 describe('Linter', function() {
   describe('#lint() runs in a directory', function() {
     it('should exists', function() {
-      return new Linter('C:/Users/NG52D87/github/greplint/test/fixtures').lint()
+      let fixtures = path.join(__dirname, 'fixtures')
+      return new Linter(fixtures).lint()
         .then(values => {
           values.should.have.length.above(0)
           values[0].should.have.property('filename').which.contain('input.txt')
@@ -21,7 +23,8 @@ describe('Linter', function() {
 
   describe('#lint() runs in a file', function() {
     it('should exists', function() {
-      return new Linter('C:/Users/NG52D87/github/greplint/test/fixtures/input.txt').lint()
+      let fixtures = path.join(__dirname, 'fixtures/input.txt')
+      return new Linter(fixtures).lint()
         .then(values => {
           values.should.have.length.above(0)
           values[0].should.have.property('filename').which.contain('input.txt')
