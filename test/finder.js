@@ -13,18 +13,24 @@ describe('Finder', function() {
 
   describe('#find()', function () {
     describe('in a directory', function () {
-      it('should find something', function () {
+      it('should find something', function (done) {
         let fixtures = path.join(__dirname, 'fixtures')
         new Finder().find(fixtures)
-        .then(values => values.should.have.length.above(0))
+        .then(values => {
+          values.should.have.length.above(0)
+          done()
+        })
       });
     });
 
     describe('in a file', function () {
-      it('should be empty', function () {
+      it('should be empty', function (done) {
         let fixtures = path.join(__dirname, 'fixtures/input.txt')
         new Finder().find(fixtures)
-        .then(values => values.should.be.empty)
+        .then(values => {
+          values.should.be.empty
+          done()
+        })
       });
     });
   });

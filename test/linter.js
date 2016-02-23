@@ -6,7 +6,7 @@ const should = chai.should();
 
 describe('Linter', function() {
   describe('#lint() runs in a directory', function() {
-    it('should exists', function() {
+    it('should exists', function(done) {
       let fixtures = path.join(__dirname, 'fixtures')
       return new Linter(fixtures).lint()
         .then(values => {
@@ -17,12 +17,13 @@ describe('Linter', function() {
           values[1].should.have.property('filename').which.contain('input.txt')
           values[1].should.have.property('lineNumber', '3')
           values[1].should.have.property('value', '-- XXX root')
+          done()
         })
     });
   });
 
   describe('#lint() runs in a file', function() {
-    it('should exists', function() {
+    it('should exists', function(done) {
       let fixtures = path.join(__dirname, 'fixtures/input.txt')
       return new Linter(fixtures).lint()
         .then(values => {
@@ -33,6 +34,7 @@ describe('Linter', function() {
           values[1].should.have.property('filename').which.contain('input.txt')
           values[1].should.have.property('lineNumber', '3')
           values[1].should.have.property('value', '-- XXX root')
+          done()
         })
     });
   });

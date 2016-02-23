@@ -6,7 +6,7 @@ const should = chai.should();
 
 describe('Grep', function() {
   describe('#find() in a directory', function () {
-    it('should bring some results', function () {
+    it('should bring some results', function (done) {
       let fixtures = path.join(__dirname, 'fixtures')
       return new Grep().find('hello|root', fixtures)
         .then(values => {
@@ -17,12 +17,13 @@ describe('Grep', function() {
           values[1].should.have.property('filename').which.contain('input.txt')
           values[1].should.have.property('lineNumber', '3')
           values[1].should.have.property('value', '-- XXX root')
+          done()
         })
     });
   });
 
   describe('#find() in a file', function () {
-    it('should bring some results', function () {
+    it('should bring some results', function (done) {
       let fixtures = path.join(__dirname, 'fixtures')
       return new Grep().find('hello|root', fixtures, 'input.txt')
         .then(values => {
@@ -33,6 +34,7 @@ describe('Grep', function() {
           values[1].should.have.property('filename').which.contain('input.txt')
           values[1].should.have.property('lineNumber', '3')
           values[1].should.have.property('value', '-- XXX root')
+          done()
         })
     });
   });
