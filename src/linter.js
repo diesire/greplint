@@ -14,9 +14,8 @@ export default class Linter {
 
     this.pathname = pathname
     this.options = options
-    this.finder = new Finder()
-    this.grep = new Grep(options)
-
+    this.finder = new Finder(this.options)
+    this.grep = new Grep(this.options)
   }
 
   lint() {
