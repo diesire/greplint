@@ -70,7 +70,7 @@ const COMPLEX_MATCH = {
   ]
 }
 
-describe.only('ackmate-parser', () => {
+describe('ackmate-parser', () => {
   let spy = null
   let memStream = null
   let parser = null
