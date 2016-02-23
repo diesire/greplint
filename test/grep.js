@@ -8,7 +8,7 @@ describe('Grep', function() {
   describe('#find() in a directory', function () {
     it('should bring some results', function () {
       let fixtures = path.join(__dirname, 'fixtures')
-      return new Grep().find('"hello|root"', fixtures)
+      return new Grep().find('hello|root', fixtures)
         .then(values => {
           values.should.have.length.above(0)
           values[0].should.have.property('filename').which.contain('input.txt')
@@ -24,7 +24,7 @@ describe('Grep', function() {
   describe('#find() in a file', function () {
     it('should bring some results', function () {
       let fixtures = path.join(__dirname, 'fixtures')
-      return new Grep().find('"hello|root"', fixtures, 'input.txt')
+      return new Grep().find('hello|root', fixtures, 'input.txt')
         .then(values => {
           values.should.have.length.above(0)
           values[0].should.have.property('filename').which.contain('input.txt')
