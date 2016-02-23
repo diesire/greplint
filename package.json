@@ -21,12 +21,9 @@
     "sinon-chai": "^2.8.0"
   },
   "dependencies": {
-    "chalk": "^1.1.1",
-    "commander": "^2.9.0",
     "bragi": "^0.1.1",
     "nak": "^0.3.3",
     "node-dir": "^0.1.11",
-    "bragi": "^0.1.1",
     "rcfinder": "^0.1.8",
     "shelljs-nodecli": "^0.1.1",
     "through2": "^2.0.0"
