@@ -9,6 +9,11 @@
     "preversion": "npm test",
     "test": "npm run build && mocha --require babel-core/register"
   },
+  "keywords": [
+    "linter",
+    "grep",
+    "greplint"
+  ],
   "author": "diesire",
   "license": "MIT",
   "devDependencies": {
