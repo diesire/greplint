@@ -18,9 +18,9 @@ export default class Linter {
     this.grep = new Grep(this.options)
   }
 
-  lint() {
-    const dirs = this.finder.find(this.pathname)
-    return dirs
+  lint(grepExpression) {
+    this.grepExpression = grepExpression
+    return this.finder.find(this.pathname)
       .then(values => this.grepDirs([this.pathname].concat(values)))
       .catch(err => Promise.reject(`Linter#lint error ${err}`))
   }
