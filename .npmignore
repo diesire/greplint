@@ -1,3 +1,5 @@
 src/
 test/
 .editorconfig
+.babelrc
+.npmignore
