@@ -5,6 +5,7 @@ import logger from 'bragi'
 import Config from './config'
 import Finder from './finder'
 import Grep from './grep'
+import Rule from './rule'
 
 export default class Linter {
   constructor(pathname, options = {}) {
@@ -34,6 +35,7 @@ export default class Linter {
         logger.log('Linter', `matches found`, filtered)
         return filtered
       })
+      .catch(err => Promise.reject(`Linter#grepDirs error ${err}`))
   }
 
   /**
@@ -56,11 +58,13 @@ export default class Linter {
     logger.log('Linter:grepDir:debug', 'paths', dirname, basename)
 
     if (!grepExpression) {
-      logger.log('Linter:grepDir:debug', 'looking config file')
-      config = new Config(pathname, this.options)
-      if (config.data.rules.todo) {
-        grepExpression = `${config.data.rules.todo.join('|')}`
-      }
+      config = new Config(pathname, this.options).load()
+
+      logger.log('Linter:grepDir:debug', 'looking config file', config)
+      const rules = config.rules.map(rawRule => new Rule(rawRule)).map(rule => rule.value.join('|'))
+
+      logger.log('Linter:grepDir:debug', 'rules', rules)
+      grepExpression = `${rules.join('|')}`
     }
 
     if (grepExpression) {
