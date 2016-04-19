@@ -1,5 +1,6 @@
 {
-  "rules": {
-    "todo": ["TODO", "a"]
-  }
+  "rules": [
+    {"todo": ["TODO"]},
+    {"fixme": ["fixme"]}
+  ]
 }
