@@ -1,6 +1,6 @@
 {
   "name": "greplint",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Quick & dirty grep-like linter",
   "main": "lib/linter.js",
   "scripts": {
